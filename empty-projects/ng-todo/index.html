@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="css/bootstrap-theme.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body ng-app="ngTodo"><!-- app -->
+<body class="container" ng-app="ngTodo"><!-- app -->
   <div class="navbar navbar-inverse" role="navigation">
     <div class="container">
       <a class="navbar-brand" href="#">ng-todo</a>
@@ -37,7 +37,7 @@
         <input ng-model="todo.val" ng-class="{ finished: todo.completed }" class="form-control" type="text"><!-- model / class  -->
         <span class="input-group-btn">
           <button class="btn btn-danger" ng-click="removeTodo($index)" type="button"><!-- click  -->
-            <i ng-show="todo.completed" class="glyphicon glyphicon-remove"></i>
+            <i complete-color="todo.completed" class="glyphicon glyphicon-remove"></i>
           </button>
         </span>
       </div>
