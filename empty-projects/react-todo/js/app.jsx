@@ -13,5 +13,9 @@ var app = app || {};
     );
   };
 
+  app.retrieveData = function() {
+    return app.FIXTURES;
+  };
+
   app.init();
 })();
