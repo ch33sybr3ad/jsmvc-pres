@@ -16,6 +16,17 @@ app.components = app.components || {};
       var data = app.retrieveData();
       this.setState({todos: data});
     },
+    clearCompleted: function() {
+      var NewTodos = this.state.todos.filter(function(el,index) {
+        return !el.completed;
+      });
+      this.setState({todos: NewTodos});
+    },
+    createNewTodo: function(newValue) {
+      var state = this.state;
+      state.todos.unshift({ val:newValue, completed: false });
+      this.setState(state);
+    },
     updateVal: function(val, index) {
       var state = this.state;
       state.todos[index].val = val;
@@ -36,23 +47,47 @@ app.components = app.components || {};
     render: function() {
       return (
         <div className="outer-container">
-          <NewTodo />
+          <NewTodo 
+            createNewTodo ={this.createNewTodo}
+          />
           <TodoList 
             todos={this.state.todos}
             updateVal={this.updateVal} 
             toggleCompleted={this.toggleCompleted}
             deleteTodo={this.deleteTodo}
           />
-          <ClearCompleted />
+          <ClearCompleted 
+            clearCompleted={this.clearCompleted}
+          />
         </div>
       );
     }
   });
 
   var NewTodo = app.components.NewTodo = React.createClass({
+    mixins: [React.addons.LinkedStateMixin],
+    getInitialState: function() {
+      return {
+        newValue: ''
+      };
+    },
+    handleNewTodo: function(e) {
+      this.props.createNewTodo(this.state.newValue);
+      this.setState({newValue: ''});
+    },
     render: function() {
-      return(
-        <h1> New Todo </h1>
+      return (
+        <div className="add-todo-group input-group input-group-lg">
+          <span className="input-group-addon">
+            <i className="glyphicon glyphicon-list-alt"></i>
+          </span>
+          <input valueLink={this.linkState('newValue')} placeholder="New Todo" className="form-control" type="text" />
+          <span className="input-group-btn">
+            <button className="btn btn-success" type="button" onClick={this.handleNewTodo}>
+              <i className="glyphicon glyphicon-plus"></i>
+            </button>
+          </span>
+        </div>
       );
     }
   });
@@ -109,9 +144,14 @@ app.components = app.components || {};
   });
 
   var ClearCompleted = app.components.ClearCompleted = React.createClass({
+    handleClick: function() {
+      this.props.clearCompleted();
+    },
     render: function() {
       return(
-        <h1> Clear Complete </h1>
+        <div className="btn-clear-group">
+          <button onClick={this.handleClick} className="btn btn-primary btn-clear"> Clear Completed</button>
+        </div> 
       );
     }
   });
